@@ -1,0 +1,131 @@
+.chatbox, .lesson_sn{
+    height: 60vh;
+    overflow-y: auto;
+    border: 3px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: #3f3f4f;
+    align-items: flex-end;
+    scroll-behavior: smooth;
+}
+
+.lesson_sn {
+    height: 60vh;
+    background-color: #fff;
+    list-style-type: none; /* Remove bullet points */
+    padding: 0;
+    border: 1px solid #ccc;
+
+}
+/* Style the scrollbar */
+.chatbox::-webkit-scrollbar {
+    width: 8px;
+}
+
+/* Handle */
+.chatbox::-webkit-scrollbar-thumb {
+    background: #5c5a5a; 
+    border-radius: 8px;
+}
+
+/* Handle on hover */
+.chatbox::-webkit-scrollbar-thumb:hover {
+    background: #555; 
+}
+
+/* Track */
+.chatbox::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 8px;
+}
+
+
+.msg_bot_container, .msg_user_container {
+    width:100%; 
+    display: flex;
+}
+.msg_bot_container {
+    justify-content: flex-start;
+}
+.msg_user_container {
+    justify-content: flex-end;
+}
+
+.msg_bot, .msg_user {
+    padding: 10px;
+    border-radius: 15px;
+    max-width: 80%;
+    margin-bottom: 10px;
+    min-height: 30px;
+    padding-left: 10px;
+    padding-right: 10px;
+  
+}
+
+.msg_bot {
+    background-color: #d9f9df;
+}
+
+.msg_user {
+    background-color: #f6d6be;   
+} 
+
+.chat_controls {
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    margin: auto;
+}
+
+.chat_controls button {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #c7dbef;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.chat_controls button:hover {
+    background-color: #ced9e4;
+}
+
+.chat_controls textarea {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    resize: none;
+    width: 100%;
+    height: 150%;
+    transition: 0.3s;
+    border: 1px solid #636264;
+}
+
+.chat_controls input {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    border: 1px solid #636264;
+}
+.chat_controls select {
+    margin: 5px;
+    padding: 5px;
+    border-radius: 5px;
+    border: none;
+    background-color: #ffffff;
+    resize: none;
+    width: 100%;
+    height: 100%;
+    transition: 0.3s;
+    border: 1px solid #636264;
+}
+

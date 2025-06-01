@@ -1,0 +1,188 @@
+<html>
+
+<head>
+    <title>Home</title>
+    <link rel="stylesheet" href="/static/bootstrap.min.css">
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="#">SimuLearn</a>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="{{ url_for('logout')}}">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container py-2">
+        <ul class="nav nav-tabs mb-1">
+            <li class="nav-item">
+                <a class="nav-link active"  href="#learning_room"  data-toggle="tab" role="tab">
+                    Learning room
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link"  href="#lesson_designer"  data-toggle="tab" role="tab">
+                    Lesson designer
+                </a>
+            </li>
+        </ul>
+        <div class="tab-content">
+            <div class="tab-pane fade show active" role="tabpanel" 
+             id="learning_room">
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="chat_controls">
+                            <select id="LRLessonList" onchange="loadConversation()">
+                                {% for lesson in lessons %}
+                                    <option value="{{lesson.id}}" {% if lesson.id == current_lesson_id %}selected{% endif %}>
+                                        {{lesson.lesson_title}}
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <h6>Conversation with Simu (🦉):</h6>
+                        <div class="chatbox" id="scChatbox">
+                            <div class="msg_bot_container">
+                                <div class="msg_bot">
+                                    <strong>🦉</strong>
+                                    Hello, I am Simu. How can I help you today?
+                                </div>
+                            </div>
+                            {% for conversation in sc_conversations %}
+
+                            <div class="msg_user_container">
+                                    <div class="msg_user">
+                                        {{conversation.user_input}}
+                                    </div>
+                            </div>
+        
+                            <div class="msg_bot_container">
+                                    <div class="msg_bot">
+                                        {{conversation.response}}
+                                    </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </div>
+
+                        <div class="chat_controls">
+                            <textarea id="toSCInputText" class="input" placeholder="Type here..."></textarea>
+                        </div>
+
+                        <div class="chat_controls">
+                            <button onclick="sendMessage('sc')">Send</button>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="chat_controls">
+                            <button onclick="clearChat()">Clear Chat</button>
+                        </div>
+                        <h6>Conversation with Tutor (📚):</h6>
+                        <div class="chatbox" id="tutorChatbox">
+                            <div class="msg_bot_container">
+                                <div class="msg_bot">
+                                    <strong>📚</strong>
+                                    Hello, I am your tutor. How can I assist you today?
+                                </div>
+                            </div>
+
+                            {% for conversation in tutor_conversations %}
+
+                            <div class="msg_user_container">
+                                    <div class="msg_user">
+                                        {{conversation.user_input}}
+                                    </div>
+                            </div>
+        
+                            <div class="msg_bot_container">
+                                    <div class="msg_bot">
+                                        {{conversation.response}}
+                                    </div>
+                            </div>
+                            {% endfor %}
+
+                        </div>
+
+                        <div class="chat_controls">
+                            <textarea id="toTutorInputText" class="input" placeholder="Type here..."></textarea>
+                        </div>
+
+                        <div class="chat_controls">
+                            <button onclick="sendMessage('tutor')">Send</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane fade" role="tabpanel" id="lesson_designer">
+                <div class="row">
+                    <nav class="col-md-3">
+                        <div class="sidebar-sticky">
+                            <div class="chat_controls">
+                                <button id="clearContentsBtn" onclick="clearLDContents()" disabled>Create New Lesson</button>
+                            </div>  
+                            <div class="chat_controls">
+                                <input type="text" id="searchWord" placeholder="Search" onkeyup="binarySearch()">
+
+                            </div>
+                            <h6>Existing Lessons:</h6>
+
+                            <ul id="LDSideNav" class="lesson_sn">
+
+                                {% for lesson in lessons %}
+                                    <li class="nav-item">
+                                        <a class="nav-link" href="#" onclick="loadLesson({lesson.id})">
+                                            {{lesson.lesson_title}}
+                                        </a>
+                                    </li>
+                                {% endfor %}    
+                            </ul>
+
+                        </div>
+
+                    </nav>
+
+                    <div class="col-md-9">
+                        <div class="form-group">
+                            <label for="userPrompt">🎓 Desribe what you want to learn:</label>
+                            <textarea id="userPrompt" class="form-control" placeholder="Type here..."></textarea>
+                        </div>
+                        <div class="chat_controls">
+                            <button id="lessonDesignBtn" onclick="designLesson()">Design</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="lessonTitle">📋 Lesson title:</label>
+                            <textarea id="lessonTitle" class="form-control" readonly placeholder="Lesson designer will update this info..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="lessonDesc">📜 Lesson description:</label>
+                            <textarea id="lessonDesc" class="form-control" readonly placeholder="Lesson designer will update this info..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="tutorPrompt">📚 Tutor description:</label>
+                            <textarea id="tutorPrompt" class="form-control" readonly placeholder="Lesson designer will update this info..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="scPrompt">🦉 Simu character description:</label>
+                            <textarea id="scPrompt" class="form-control" readonly placeholder="Lesson designer will update this info..."></textarea>
+                        </div>
+                        <div class="chat_controls">
+                            <button id="lessonDeleteBtn" disabled>Delete</button>
+                            <button id="lessonSaveBtn" onclick="saveLesson()" disabled>Save</button>
+                        </div>
+                    </div>
+
+                </div>
+                
+            </div>
+        </div>
+
+            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+            <script src="/static/script.js"></script>
+            <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+</body>
+
+</html>
